@@ -1,4 +1,4 @@
-import * as DirectCallModule from './DirectCallModule';
+import * as DirectCallModule from "./DirectCallModule";
 
 export type AndroidPermissionPrompt = {
     title: string,
