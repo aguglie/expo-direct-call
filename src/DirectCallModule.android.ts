@@ -1,23 +1,27 @@
+import { requireNativeModule } from "expo-modules-core";
 import { PermissionsAndroid } from "react-native";
-import { requireNativeModule } from 'expo-modules-core';
+
 import { AndroidPermissionPrompt } from ".";
 
-const nativeModule = requireNativeModule('ExpoDirectCall')
+const nativeModule = requireNativeModule("ExpoDirectCall");
 
-async function requestAndroidPermission(props: { title: string, message: string }): Promise<true> {
+async function requestAndroidPermission(props: {
+  title: string;
+  message: string;
+}): Promise<true> {
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CALL_PHONE,
       {
         title: props.title,
         message: props.message,
-        buttonPositive: 'OK',
+        buttonPositive: "OK",
       },
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       return Promise.resolve(true);
     } else {
-      return Promise.reject(new Error('Permission denied'));
+      return Promise.reject(new Error("Permission denied"));
     }
   } catch (err) {
     console.warn("Unexpected error while requesting permission", err);
@@ -25,7 +29,10 @@ async function requestAndroidPermission(props: { title: string, message: string 
   }
 }
 
-export async function directCall(phoneNumber: string, androidPermissionPrompt: AndroidPermissionPrompt) {
+export async function directCall(
+  phoneNumber: string,
+  androidPermissionPrompt: AndroidPermissionPrompt,
+) {
   await requestAndroidPermission(androidPermissionPrompt);
   nativeModule.directCall(phoneNumber);
 }
