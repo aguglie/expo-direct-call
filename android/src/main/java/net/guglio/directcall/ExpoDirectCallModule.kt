@@ -14,7 +14,11 @@ class ExpoDirectCallModule : Module() {
         Name("ExpoDirectCall")
 
         Function("directCall") { phoneNumber: String ->
-            val url = "tel:${Uri.encode(phoneNumber)}"
+            val url =  if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+                "tel:(${Uri.encode(phoneNumber)})"
+            } else {
+                "tel:${Uri.encode(phoneNumber)}"
+            }
             val callIntent = Intent(Intent.ACTION_CALL, Uri.parse(url))
             callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
